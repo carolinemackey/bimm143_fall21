@@ -1,2 +1,2 @@
-# bimm143_fall21
-Bioinformatics Class
+# BIMM143
+Bioinformatics Class at UC San Diego
