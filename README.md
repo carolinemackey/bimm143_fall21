@@ -3,9 +3,9 @@ Bioinformatics Class at UC San Diego, Fall 2021.
 
 ## Contents 
 
-Lab 5: ["Data exploration and visualization in R"](cmackey_lab8.html)
+Lab 5: ["Data exploration and visualization in R"](Lab5/cmackey_lab5.pdf)
 
-Lab 6: ["Why, when and how of writing your own R functions"](cmackey_lab6.pdf) 
+Lab 6: ["Why, when and how of writing your own R functions"](Lab6/cmackey_lab6.pdf) 
 
 Lab 8: ["Introduction to machine learning for Bioinformatics 1"](cmackey_lab8.md) 
 
