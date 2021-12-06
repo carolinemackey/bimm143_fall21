@@ -11,7 +11,7 @@ Lab 8: ["Introduction to machine learning for Bioinformatics 1"](cmackey_lab8.md
 
 Lab 9: ["Unsupervised learning mini-project"](cmackey_lab9.pdf) 
 
-Lab 10: ["Halloween Candy Mini-Project new"]("blob/main/Lab10/cmackey_lab10.Rmd") 
+Lab 10: ["Halloween Candy Mini-Project new"](blob/main/Lab10/cmackey_lab10.Rmd") 
 
 Lab 11: ["Structural Bioinformatics (Part 1)"]("https://github.com/carolinemackey/bimm143_fall21/blob/main/Lab11/cmackey_lab11.pdf") 
 
