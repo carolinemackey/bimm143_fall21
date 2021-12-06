@@ -11,7 +11,7 @@ Lab 8: ["Introduction to machine learning for Bioinformatics 1"](Lab8/cmackey_la
 
 Lab 9: ["Unsupervised learning mini-project"](Lab9/cmackey_lab9.pdf) 
 
-Lab 10: ["Halloween Candy Mini-Project new"](Lab10/cmackey_lab10.Rmd) 
+Lab 10: ["Halloween Candy Mini-Project"](Lab10/cmackey_lab10.Rmd) 
 
 Lab 11: ["Structural Bioinformatics (Part 1)"](Lab11/cmackey_lab11.pdf) 
 
