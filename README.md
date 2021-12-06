@@ -7,7 +7,7 @@ Lab 5: ["Data exploration and visualization in R"]("file:///Users/carolinemackey
 
 Lab 6: ["Why, when and how of writing your own R functions"]("https://github.com/carolinemackey/bimm143_fall21/blob/main/Lab6/cmackey_lab6.pdf") 
 
-Lab 8: ["Introduction to machine learning for Bioinformatics 1"]("https://github.com/carolinemackey/bimm143_fall21/blob/main/Lab8/cmackey_lab8.pdf") 
+Lab 8: ["Introduction to machine learning for Bioinformatics 1"]("https://github.com/carolinemackey/bimm143_fall21/blob/main/Lab8/cmackey_lab8.Rmd") 
 
 Lab 9: ["Unsupervised learning mini-project"]("https://github.com/carolinemackey/bimm143_fall21/blob/main/Lab9/cmackey_lab9.pdf") 
 
