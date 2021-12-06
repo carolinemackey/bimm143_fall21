@@ -3,13 +3,13 @@ Bioinformatics Class at UC San Diego, Fall 2021.
 
 ## Contents 
 
-Lab 5: ["Data exploration and visualization in R"]("file:///Users/carolinemackey/Desktop/fall%202021/BIMM%20143/bimm143_github/Lab8/cmackey_lab8.html")
+Lab 5: ["Data exploration and visualization in R"](cmackey_lab8.html)
 
-Lab 6: ["Why, when and how of writing your own R functions"]("https://github.com/carolinemackey/bimm143_fall21/blob/main/Lab6/cmackey_lab6.pdf") 
+Lab 6: ["Why, when and how of writing your own R functions"](cmackey_lab6.pdf) 
 
-Lab 8: ["Introduction to machine learning for Bioinformatics 1 new"](cmackey_lab8.md) 
+Lab 8: ["Introduction to machine learning for Bioinformatics 1"](cmackey_lab8.md) 
 
-Lab 9: ["Unsupervised learning mini-project"]("https://github.com/carolinemackey/bimm143_fall21/blob/main/Lab9/cmackey_lab9.pdf") 
+Lab 9: ["Unsupervised learning mini-project"](cmackey_lab9.pdf) 
 
 Lab 10: ["Halloween Candy Mini-Project"]("https://github.com/carolinemackey/bimm143_fall21/blob/main/Lab10/cmackey_lab10.Rmd") 
 
