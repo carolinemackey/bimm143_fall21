@@ -1,0 +1,375 @@
+---
+title: "Lab 17: Vaccination rate mini project"
+author: "Caroline Mackey (A15522472)"
+date: "11/23/2021"
+output: 
+  html_document:
+    latex_engine: xelatex
+---
+
+## Background
+
+We are investigating data on vaccination rates in California.
+
+## Getting started
+
+```{r}
+# Import vaccination data 
+
+vax <- read.csv("covid19vaccinesbyzipcode_test.csv")
+head(vax) 
+```
+
+> **Q1.** What column details the total number of people fully vaccinated?
+>
+> **A1.** The column **persons_fully_vaccinated** details the total number of people fully vaccinated.
+
+> **Q2.** What column details the Zip code tabulation area?
+>
+> **A2.** The column **zip_code_tabulation_area** details the Zip code tabulation area.
+
+> **Q3.** What is the earliest date in this data set?
+
+```{r}
+vax$as_of_date[1]
+```
+
+> **A3.** **2021-01-05** is the earliest date in the data set.
+
+> **Q4.** What is the latest date in this data set?
+
+```{r}
+vax$as_of_date[nrow(vax)]
+```
+
+> **A4.** **2021-11-16** is the latest date in the data set.
+
+Use the **skim()** function to quickly overview & summarize the various columns of the data set.
+
+```{r}
+skimr::skim(vax)
+```
+
+> **Q5.** How many numeric columns are in this dataset?
+
+```{r}
+library("dplyr")
+length(select_if(vax,is.numeric))
+```
+
+> **A5.** There are **9** numeric columns in the vax data set.
+
+> **Q6.** Note that there are "missing values" in the data set. How many NA values there in the persons_fully_vaccinated column?
+
+```{r}
+sum.na <- sum( is.na(vax$persons_fully_vaccinated) ) 
+sum.na
+```
+
+Another method:
+
+```{r}
+summary(vax$persons_fully_vaccinated)
+```
+
+> **A6.** There are **8256** missing values (i.e. "NA"s) in the persons_fully_vaccinated column.
+
+> **Q7.** What percent of persons_fully_vaccinated values are missing (to 2 significant figures)?
+
+```{r}
+sum.na/nrow(vax)
+```
+
+> **A7.** Approximately **10.%** of persons_fully_vaccinated values are missing.
+
+> **Q8.** \[Optional\]: Why might this data be missing?
+
+> **A8.** One reason for the missing data could have been if there were issues reporting/ obtaining the data due to confidentiality.
+
+## Working with dates
+
+Use the **lubridate** package to make life a lot easier when dealing with dates & times.
+
+```{r}
+library(lubridate)
+```
+
+Make our `as_of_date` column lubridate format.
+
+```{r}
+# Specify that we are using the year-month-day format. 
+vax$as_of_date <- ymd(vax$as_of_date)
+```
+
+Now, we can do useful math with dates more easily.
+
+```{r}
+# Example 
+today() - vax$as_of_date[1]
+```
+
+> **Original Q9.** How many days have passed since the last update of the data set?
+
+```{r}
+today()
+today()- vax$as_of_date[nrow(vax)]
+```
+
+> **Original A9.** 7 days have passed since the last update of the data set and today (November 23).
+
+> **New Q9.** How many days between the first & last enry in the dataset? (changed this question in class)
+
+```{r}
+# Last entry: vax$as_of_date[nrow(vax)]
+# First entry: vax$as_of_date[1]
+# Take the difference
+vax$as_of_date[nrow(vax)]-vax$as_of_date[1]
+```
+
+> **New A9.** **315 days** have passed between the first & last entry of the data set.
+
+> **Q10.** How many unique dates are in the data set (i.e. how many different dates are detailed)?
+
+```{r}
+# unique(vax$as_of_date) prints all of the unique dates 
+# take the length of this to print how many 
+length(unique(vax$as_of_date))
+```
+
+> **A10** There are **46** unique dates in the data set.
+
+## Working with ZIP Codes
+
+We will use the **zipcodeR** package to help make sense of the ZIP Code data.
+
+```{r}
+library(zipcodeR)
+```
+
+La Jolla ZIP Code:
+
+```{r}
+geocode_zip('92037')
+```
+
+Distance between 2 ZIP Codes:
+
+```{r}
+zip_distance('92037','92109')
+```
+
+Census data:
+
+```{r}
+reverse_zipcode(c('92037', "92109") )
+```
+
+```{r}
+# Pull data for all ZIP codes in the dataset
+# zipdata <- reverse_zipcode( vax$zip_code_tabulation_area )
+```
+
+## Focus on the San Diego area
+
+We will subset with base R
+
+```{r}
+# Subset to San Diego county only areas
+sd <- vax$county == "San Diego"
+head(vax[sd,])
+```
+
+```{r}
+library(dplyr)
+sd <- filter(vax, county=="San Diego")
+nrow(sd)
+```
+
+Subsetting all San Diego county areas with a population of over 10,000
+
+```{r}
+sd.10 <- filter(vax, county == "San Diego" & 
+                  age5_plus_population > 1000)
+```
+
+> **Q11.** How many distinct zip codes are listed for San Diego County?
+
+```{r}
+length(unique(sd$zip_code_tabulation_area))
+```
+
+> **A11.** There are **107** distinct ZIP codes for San Diego County.
+
+> **Q12.** What San Diego County Zip code area has the largest 12 + Population in this data set?
+
+```{r}
+max12pop <- which.max(sd$age12_plus_population)
+sd[max12pop,]
+```
+
+> **A12.** ZIP Code **92154** has the largest 12+ population in this data set.
+
+> **Q13.** What is the overall average "Percent of Population Fully Vaccinated" value for all San Diego "County" as of "2021-11-09"?
+
+```{r}
+sd.11.9 <- filter(sd, as_of_date=="2021-11-09")
+head(sd.11.9)
+mean(sd.11.9$percent_of_population_fully_vaccinated, na.rm=TRUE)
+```
+
+> **A13.** The average Percent of Population Fully Vaccinated value for all San Diego County as of 2021-11-09 is **67.3%** .
+
+We could also look at the 6-number summary.
+
+```{r}
+summary(sd.11.9$percent_of_population_fully_vaccinated)
+```
+
+> **A14.** Using either ggplot or base R graphics make a summary figure that shows the distribution of Percent of Population Fully Vaccinated values as of "2021-11-09"?
+
+```{r}
+library(ggplot2)
+
+ggplot(sd.11.9) + 
+  aes(percent_of_population_fully_vaccinated) +
+  geom_histogram(bins=15) + 
+  labs (x="Percent of Population Fully Vaccinated in a ZIP Code Area",
+        y="Count (ZIP Code areas", 
+        title="Histogram of Vaccination Rates Accross San Diego County",
+       subtitle="As of 2021-11)-09") 
+```
+
+> \*A14.\*\* See graph above.
+
+## Focus on UCSD/La Jolla
+
+```{r}
+ucsd <- filter(sd, zip_code_tabulation_area == "92037")
+ucsd
+```
+
+```{r}
+# Example: what is the age 5+ population in the 92037 ZIP code? 
+ucsd[1,]$age5_plus_population
+```
+
+> **Q15.** Using ggplot make a graph of the vaccination rate time course for the 92037 ZIP code area:
+
+```{r}
+ggplot(ucsd) + 
+  aes(x=as_of_date, 
+      y=percent_of_population_fully_vaccinated) + 
+  geom_point() + 
+  geom_line(groups=1) + 
+  ylim(c(0,1)) + 
+  labs(x="Date", y="Percent Vaccinated")
+```
+
+> **A15.** See graph above.
+
+## Comparing 92037 to other similar sized areas?
+
+```{r}
+# Subset to all CA areas with a population as large as 92037
+vax.36 <- filter(vax, age5_plus_population > 36144 &
+                as_of_date == "2021-11-16")
+
+#head(vax.36)
+```
+
+> **Q16.** Calculate the mean "Percent of Population Fully Vaccinated" for ZIP code areas with a population as large as 92037 (La Jolla) as_of_date "2021-11-16". Add this as a straight horizontal line to your plot from above with the geom_hline() function?
+
+```{r}
+mean(vax.36$percent_of_population_fully_vaccinated)
+```
+
+```{r}
+ggplot(ucsd) + 
+  aes(x=as_of_date, 
+      y=percent_of_population_fully_vaccinated) + 
+  geom_point() + 
+  geom_line(groups=1) + 
+  ylim(c(0,1)) + 
+  labs(x="Date", y="Percent Vaccinated") + 
+  geom_hline(yintercept = 0.66, linetype="longdash", color="red")
+```
+
+> **A16.** The mean Percent of Population Fully Vaccinated for ZIP code areas with a population as large as 92037 (La Jolla) as of 2021-11-16 is approximately **66%**. This value is addded to the graph above as a red line.
+
+> **Q17.** What is the 6 number summary (Min, 1st Qu., Median, Mean, 3rd Qu., and Max) of the "Percent of Population Fully Vaccinated" values for ZIP code areas with a population as large as 92037 (La Jolla) as_of_date "2021-11-16"?
+
+```{r}
+summary(vax.36$percent_of_population_fully_vaccinated)
+```
+
+> **A17.** See summary above.
+
+> **Q18.** Using ggplot generate a histogram of this data.
+
+```{r}
+ggplot(vax.36) + 
+  aes (x=percent_of_population_fully_vaccinated) + 
+  geom_histogram() + 
+   labs(x="Percent Vaccinated", y="Count")
+```
+
+> **A18** See graph above.
+
+> **Q19.** Is the 92109 and 92040 ZIP code areas above or below the average value you calculated for all these above?
+
+```{r}
+# Print mean again 
+mean(vax.36$percent_of_population_fully_vaccinated)
+```
+
+```{r}
+
+filter(vax.36, zip_code_tabulation_area=="92109")
+```
+
+```{r}
+filter(vax.36, zip_code_tabulation_area=="92040")
+```
+
+> **A19.** The percent of population fully vaccinated in the **92109** ZIP code is approximately **69%**, which is higher than average of approximately 66%. The percent of population fully vaccinated in the **92040** ZIP code is approxumately **52%**, which is lower than average.
+
+```{r}
+colnames(vax.36)
+```
+
+> **Q20.** Finally make a time course plot of vaccination progress for all areas in the full dataset with a age5_plus_population \> 36144
+
+First, we need to subset the full `vax` daraset to include only ZIP codes areas with a population as large as 92037.
+
+```{r}
+vax.36.all <- filter(vax, age5_plus_population > 36144)
+nrow(vax.36.all)
+```
+
+How many unique zip codes have a population as large as 92307?
+
+```{r}
+length(unique(vax.36.all))
+```
+
+Let's make a final figure that shows all these ZIP areas.
+
+```{r}
+ggplot(vax.36.all) +
+  aes(x=as_of_date,
+      y=percent_of_population_fully_vaccinated, 
+      group=zip_code_tabulation_area) +
+  geom_line(alpha=0.2, color="blue") + 
+  labs(x="Date", y="Percent Vaccinated",
+       title="Vaccination rate across California",
+       subtitle="Only areas with a population above 36k are shown") + 
+  geom_hline(yintercept = 0.66, linetype="longdash")
+```
+
+> **A20.** See graph above.
+
+> **Q21.** How do you feel about traveling for Thanksgiving and meeting for in-person class next Week?
+
+> **A21.** I still feel comfortable travelling for Thanksgiving and meeting for in-person class, especially since I am vaccinated and I now know a lot of people in the areas I will be are also vaccinated. However, it's always a priority to keep those around me safe, so I still tend to stay on the safe side of things, like by avoiding large crowds.
+
+Have a great break! :)
